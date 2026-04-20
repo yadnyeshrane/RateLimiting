@@ -87,8 +87,10 @@ Stats are updated atomically per request.
 #### Production Points to be consider
 1)For multiple processes/servers, use Nats or another centralized store for mianting the counter of rate limiting.
 2)Stats reset when the server restarts. Use a database if long-term tracking is required.
-3) Ensure user_id and payload are properly validated and sanitized to prevent injection attacks
+3) Ensure user_id and payload are properly validated and sanitized to prevent injection attacks.
 4)Userid should be taken from bearer token instead of taking inside the requestbody.
+5)Single process limitation: In-memory maps work only within one Node.js process. If you run multiple processes ( Kubernetes pods), each instance will track its own counters → rate limiting becomes inaccurate.
+6)Monitoring: Add logging and metrics (e.g., Prometheus, Grafana) to monitor request rates, errors, and rate-limit hits.
 
 
 ✅ Example Usage
